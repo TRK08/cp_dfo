@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <header class="layout__header">
-      <h2>ULTRA Генератор изображений 🌅</h2>
+      <h2>AIva 🌄🌅</h2>
     </header>
     <main class="layout__main">
       <PromptWithOptions />
@@ -51,6 +51,13 @@ const openNotification = (type: string) => {
     text-align: center;
     border-bottom: 1px solid #f5f5f5;
     padding: 1rem;
+
+    h2 {
+      font-family: 'Roboto Mono', monospace;
+      font-optical-sizing: auto;
+      font-weight: 300;
+      font-style: normal;
+    }
   }
 
   &__main {
