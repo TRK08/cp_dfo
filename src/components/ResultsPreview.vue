@@ -10,7 +10,7 @@
     >
       <template #action>
         <a-space direction="vertical">
-          <a-button @click="downloadZipFiles('pptx')" size="small" type="primary">Скачать</a-button>
+          <a-button @click="downloadPptx" size="small" type="primary">Скачать</a-button>
         </a-space>
       </template>
     </a-alert>
@@ -37,7 +37,7 @@ import { storeToRefs } from 'pinia'
 import { useResultsStore } from '@/stores/results'
 
 const { results, loadingStatus, presentation } = storeToRefs(useResultsStore())
-const { downloadZipFiles } = useResultsStore()
+const { downloadZipFiles, downloadPptx } = useResultsStore()
 const isAllChecked = computed(() => {
   return results.value.every((item) => item.isSelected)
 })

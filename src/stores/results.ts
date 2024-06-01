@@ -45,7 +45,7 @@ export const useResultsStore = defineStore('results', {
       }
     ],
     loadingStatus: 'init',
-    presentation: 'asd'
+    presentation: 'https://scholar.harvard.edu/files/torman_personal/files/samplepptx.pptx'
   }),
   actions: {
     async generateImages(input: string, types: string[]) {
@@ -83,7 +83,12 @@ export const useResultsStore = defineStore('results', {
         })
       } catch (e) {}
     },
-    async downloadPptx() {},
+    async downloadPptx() {
+      const link = document.createElement('a')
+      link.href = this.presentation
+      link.setAttribute('download', 'presentation.pptx')
+      link.click()
+    },
     async getBinaryFromUrl(url: string) {
       const data = await fetch(url)
       const blob = await data.blob()
