@@ -14,9 +14,31 @@
 import PromptWithOptions from '@/components/PromptWithOptions.vue'
 import ResultsPreview from '@/components/ResultsPreview.vue'
 import { useResultsStore } from '@/stores/results'
+import { notification } from 'ant-design-vue'
 import { storeToRefs } from 'pinia'
+import { watch } from 'vue'
 
-const { results } = storeToRefs(useResultsStore())
+const { results, loadingStatus } = storeToRefs(useResultsStore())
+
+watch(loadingStatus, (val) => {
+  if (val === 'success') {
+    openNotification('success')
+  } else if (val === 'error') {
+    openNotification('error')
+  }
+})
+
+const openNotification = (type: string) => {
+  if (type === 'success') {
+    notification.success({
+      message: 'Запрос успешно обработан'
+    })
+  } else if (type === 'error') {
+    notification.error({
+      message: 'Произошла ошибка при обработке запроса'
+    })
+  }
+}
 </script>
 
 <style lang="scss">

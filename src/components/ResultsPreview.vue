@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import ResultCard from './ResultCard.vue'
 import { storeToRefs } from 'pinia'
 import { useResultsStore } from '@/stores/results'
@@ -58,11 +58,6 @@ const selectAll = () => {
       return item
     })
   }
-
-  // data.value = data.value.map((item) => {
-  //   item.isSelected = !item.isSelected
-  //   return item
-  // })
 }
 </script>
 
@@ -86,7 +81,7 @@ const selectAll = () => {
   }
 
   &__panel {
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     background-color: #f5f5f5;
     border-radius: 1rem;
     display: flex;

@@ -44,7 +44,7 @@ import { useResultsStore } from '@/stores/results'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 
-const { results, loadingStatus } = storeToRefs(useResultsStore())
+const { loadingStatus } = storeToRefs(useResultsStore())
 const { generateImages } = useResultsStore()
 
 const inputValue = ref('')
@@ -62,11 +62,11 @@ const multiSelect = ref([
 
 const checkboxes = ref([
   {
-    label: 'Информационные доски',
+    label: 'Информационная доска',
     value: 'InfoBoards'
   },
   {
-    label: 'Тейбл тенты',
+    label: 'Тейбл тент',
     value: 'DemoSystems'
   },
   {
@@ -92,7 +92,18 @@ const checkboxes = ref([
 ])
 
 const sendToGenerate = async () => {
-  await generateImages(inputValue.value, multiSelect.value)
+  const formats: Record<string, boolean> = {}
+  checkboxes.value.map((item) => {
+    if (multiSelect.value.includes(item.value)) {
+      formats[item.value] = true
+    } else {
+      formats[item.value] = false
+    }
+  })
+  await generateImages(inputValue.value, formats)
+  if (loadingStatus.value === 'success') {
+    inputValue.value = ''
+  }
 }
 </script>
 

@@ -8,14 +8,15 @@
       </a-image>
     </div>
     <div class="result-card__type">
-      <span>{{ props.type }}</span>
+      <span>{{ TYPES_DICT[props.type] }}</span>
       <a-checkbox v-model:checked="isChecked"></a-checkbox>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { TYPES_DICT } from '@/dicts'
+import { computed } from 'vue'
 
 type TProps = {
   type: string
@@ -66,6 +67,10 @@ const isChecked = computed({
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    span {
+      font-size: 0.75rem;
+    }
   }
 }
 </style>

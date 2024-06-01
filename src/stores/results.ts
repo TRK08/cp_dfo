@@ -1,7 +1,7 @@
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import JSZip from 'jszip'
+import { TYPES_DICT } from '@/dicts'
 
 interface IState {
   presentation: string
@@ -17,41 +17,46 @@ interface IResult {
 
 export const useResultsStore = defineStore('results', {
   state: (): IState => ({
-    results: [
-      {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/1/14/FRONT3X-Logo.png',
-        type: 'Текст',
-        isSelected: true
-      },
-      {
-        url: 'https://t3.ftcdn.net/jpg/06/14/84/58/360_F_614845842_pNcPaSxVwBiO6hGaaSXKrQOCs6xqnijX.jpg',
-        type: 'Текст',
-        isSelected: true
-      },
-      {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/1/14/FRONT3X-Logo.png',
-        type: 'Текст',
-        isSelected: true
-      },
-      {
-        url: 'https://t3.ftcdn.net/jpg/06/14/84/58/360_F_614845842_pNcPaSxVwBiO6hGaaSXKrQOCs6xqnijX.jpg',
-        type: 'Текст',
-        isSelected: true
-      },
-      {
-        url: 'https://t3.ftcdn.net/jpg/06/14/84/58/360_F_614845842_pNcPaSxVwBiO6hGaaSXKrQOCs6xqnijX.jpg',
-        type: 'Текст',
-        isSelected: true
-      }
-    ],
-    loadingStatus: 'init',
-    presentation: 'https://scholar.harvard.edu/files/torman_personal/files/samplepptx.pptx'
+    // presentation: 'https://scholar.harvard.edu/files/torman_personal/files/samplepptx.pptx',
+    //   results: [
+    //     {
+    //       url: 'https://upload.wikimedia.org/wikipedia/commons/1/14/FRONT3X-Logo.png',
+    //       type: 'InfoBoards',
+    //       isSelected: true
+    //     },
+    //     {
+    //       url: 'https://t3.ftcdn.net/jpg/06/14/84/58/360_F_614845842_pNcPaSxVwBiO6hGaaSXKrQOCs6xqnijX.jpg',
+    //       type: 'DemoSystems',
+    //       isSelected: true
+    //     },
+    //     {
+    //       url: 'https://upload.wikimedia.org/wikipedia/commons/1/14/FRONT3X-Logo.png',
+    //       type: 'LockScreens',
+    //       isSelected: true
+    //     },
+    //     {
+    //       url: 'https://t3.ftcdn.net/jpg/06/14/84/58/360_F_614845842_pNcPaSxVwBiO6hGaaSXKrQOCs6xqnijX.jpg',
+    //       type: 'IntranetPortal',
+    //       isSelected: true
+    //     },
+    //     {
+    //       url: 'https://t3.ftcdn.net/jpg/06/14/84/58/360_F_614845842_pNcPaSxVwBiO6hGaaSXKrQOCs6xqnijX.jpg',
+    //       type: 'NewsDigest',
+    //       isSelected: true
+    //     }
+    //   ],
+    presentation: '',
+    results: [],
+    loadingStatus: 'init'
   }),
   actions: {
-    async generateImages(input: string, types: string[]) {
+    async generateImages(input: string, types: Record<string, boolean>) {
       this.loadingStatus = 'loading'
       try {
-        const res = await axios.post('http://localhost:8085/generate', {})
+        const res = await axios.post('http://localhost:8085/api/generate_slide', {
+          text: input,
+          formats: types
+        })
 
         if (res.data) {
           this.results = res.data.images
@@ -61,7 +66,9 @@ export const useResultsStore = defineStore('results', {
         console.log(e)
         this.loadingStatus = 'error'
       } finally {
-        this.loadingStatus = 'init'
+        setTimeout(() => {
+          this.loadingStatus = 'init'
+        }, 500)
       }
     },
     async downloadZipFiles(ext: string) {
@@ -70,7 +77,7 @@ export const useResultsStore = defineStore('results', {
         for (const [index, result] of this.results.entries()) {
           if (result.isSelected) {
             const res = await this.getBinaryFromUrl(result.url)
-            zip.file(`${result.type}-${index}.${ext}`, res)
+            zip.file(`${TYPES_DICT[result.type]}.${ext}`, res)
           }
         }
         await zip.generateAsync({ type: 'blob' }).then((content) => {
@@ -80,6 +87,7 @@ export const useResultsStore = defineStore('results', {
           link.setAttribute('download', 'images.zip')
           document.body.appendChild(link)
           link.click()
+          document.body.removeChild(link)
         })
       } catch (e) {}
     },
