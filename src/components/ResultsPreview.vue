@@ -4,14 +4,27 @@
     <a-alert
       v-if="presentation && presentation.length > 0"
       class="results-preview__alert"
-      message="Для редактирования изображений скачайте файл .pptx"
       type="info"
       show-icon
     >
+      <template #message>
+        <div style="display: flex; align-items: center; gap: 1rem">
+          <span>Для редактирования изображений скачайте файл .pptx</span>
+          <a-tooltip>
+            <template #title
+              >Инструкция по сохранению слайда в нужном формате: <br />
+              1. Откройте файл в PowerPoint <br />
+              2. Слева в меню выберите слайд <br />
+              3. Нажмите в верхней панели "Файл" > "Экспорт" и выберите нужный формат
+            </template>
+            <QuestionCircleOutlined />
+          </a-tooltip>
+        </div>
+      </template>
       <template #action>
-        <a-space direction="vertical">
+        <div>
           <a-button @click="downloadPptx" size="small" type="primary">Скачать</a-button>
-        </a-space>
+        </div>
       </template>
     </a-alert>
     <div class="results-preview__wrap">
@@ -35,7 +48,7 @@ import { computed } from 'vue'
 import ResultCard from './ResultCard.vue'
 import { storeToRefs } from 'pinia'
 import { useResultsStore } from '@/stores/results'
-
+import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 const { results, loadingStatus, presentation } = storeToRefs(useResultsStore())
 const { downloadZipFiles, downloadPptx } = useResultsStore()
 const isAllChecked = computed(() => {
