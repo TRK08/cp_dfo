@@ -59,7 +59,12 @@ export const useResultsStore = defineStore('results', {
         })
 
         if (res.data) {
-          this.results = res.data.images
+          this.results = res.data.images.map((item: IResult) => {
+            return {
+              ...item,
+              isSelected: false
+            }
+          })
           this.loadingStatus = 'success'
         }
       } catch (e) {
@@ -74,7 +79,7 @@ export const useResultsStore = defineStore('results', {
     async downloadZipFiles(ext: string) {
       const zip = new JSZip()
       try {
-        for (const [index, result] of this.results.entries()) {
+        for (const result of this.results) {
           if (result.isSelected) {
             const res = await this.getBinaryFromUrl(result.url)
             zip.file(`${TYPES_DICT[result.type]}.${ext}`, res)
