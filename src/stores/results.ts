@@ -18,39 +18,41 @@ interface IResult {
 export const useResultsStore = defineStore('results', {
   state: (): IState => ({
     // presentation: 'https://scholar.harvard.edu/files/torman_personal/files/samplepptx.pptx',
-    //   results: [
-    //     {
-    //       url: 'https://upload.wikimedia.org/wikipedia/commons/1/14/FRONT3X-Logo.png',
-    //       type: 'InfoBoards',
-    //       isSelected: true
-    //     },
-    //     {
-    //       url: 'https://t3.ftcdn.net/jpg/06/14/84/58/360_F_614845842_pNcPaSxVwBiO6hGaaSXKrQOCs6xqnijX.jpg',
-    //       type: 'DemoSystems',
-    //       isSelected: true
-    //     },
-    //     {
-    //       url: 'https://upload.wikimedia.org/wikipedia/commons/1/14/FRONT3X-Logo.png',
-    //       type: 'LockScreens',
-    //       isSelected: true
-    //     },
-    //     {
-    //       url: 'https://t3.ftcdn.net/jpg/06/14/84/58/360_F_614845842_pNcPaSxVwBiO6hGaaSXKrQOCs6xqnijX.jpg',
-    //       type: 'IntranetPortal',
-    //       isSelected: true
-    //     },
-    //     {
-    //       url: 'https://t3.ftcdn.net/jpg/06/14/84/58/360_F_614845842_pNcPaSxVwBiO6hGaaSXKrQOCs6xqnijX.jpg',
-    //       type: 'NewsDigest',
-    //       isSelected: true
-    //     }
-    //   ],
+    // results: [
+    //   {
+    //     url: 'https://upload.wikimedia.org/wikipedia/commons/1/14/FRONT3X-Logo.png',
+    //     type: 'InfoBoards',
+    //     isSelected: true
+    //   },
+    //   {
+    //     url: 'https://t3.ftcdn.net/jpg/06/14/84/58/360_F_614845842_pNcPaSxVwBiO6hGaaSXKrQOCs6xqnijX.jpg',
+    //     type: 'DemoSystems',
+    //     isSelected: true
+    //   },
+    //   {
+    //     url: 'https://upload.wikimedia.org/wikipedia/commons/1/14/FRONT3X-Logo.png',
+    //     type: 'LockScreens',
+    //     isSelected: true
+    //   },
+    //   {
+    //     url: 'https://t3.ftcdn.net/jpg/06/14/84/58/360_F_614845842_pNcPaSxVwBiO6hGaaSXKrQOCs6xqnijX.jpg',
+    //     type: 'IntranetPortal',
+    //     isSelected: true
+    //   },
+    //   {
+    //     url: 'https://t3.ftcdn.net/jpg/06/14/84/58/360_F_614845842_pNcPaSxVwBiO6hGaaSXKrQOCs6xqnijX.jpg',
+    //     type: 'NewsDigest',
+    //     isSelected: true
+    //   }
+    // ],
     presentation: '',
     results: [],
     loadingStatus: 'init'
   }),
   actions: {
     async generateImages(input: string, types: Record<string, boolean>) {
+      this.results = []
+      this.presentation = ''
       this.loadingStatus = 'loading'
       try {
         const res = await axios.post('http://localhost:8085/api/generate_slide', {
