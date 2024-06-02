@@ -35,13 +35,13 @@ const inputValue = ref('')
 const value2 = ref()
 
 const multiSelect = ref([
-  // 'InfoBoards',
-  // 'DemoSystems',
-  // 'LockScreens',
-  // 'IntranetPortal',
-  // 'NewsDigest',
-  // 'TVPanel',
-  // 'InfoMessage'
+  'InfoBoards',
+  'DemoSystems',
+  'LockScreens',
+  'IntranetPortal',
+  'NewsDigest',
+  'TVPanel',
+  'InfoMessage'
 ])
 
 const checkboxes = ref([
