@@ -67,6 +67,7 @@ export const useResultsStore = defineStore('results', {
               isSelected: false
             }
           })
+          this.presentation = res.data.presentation
           this.loadingStatus = 'success'
         }
       } catch (e) {
